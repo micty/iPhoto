@@ -1,0 +1,24 @@
+{
+
+    "src": "./test/",
+
+    "dest": {
+        "exif": "./data/exif.json",
+        "error": "./data/error.json",
+
+        "photo": "./data/photo/{make}/{model}/{year}/{year}-{month}-{day}/{name}",
+
+        ".jpg": "./data/jpg/{date}/{name}",
+        ".png": "./data/png/{date}/{name}",
+        ".mov": "./data/mov/{date}/{name}",
+        ".mp4": "./data/mp4/{date}/{name}",
+
+        ".*": "./data/other/{date}/{name}"
+        
+    },
+
+    "exif": {
+        "exts": [".JPG"]
+    }
+
+}
