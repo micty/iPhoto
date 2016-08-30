@@ -89,13 +89,16 @@ module.exports = {
         catch (ex) {
             console.log('错误:'.bgRed, file.red, ex.message.yellow);
 
-            var json = {};
-            json[file] = {
-                'error': ex.message,
-                'data': data,
-            }
+            var errorFile = config.error;
+            if (errorFile) {
+                var json = {};
 
-            File.appendJSON(config.error, json);
+                json[file] = {
+                    'error': ex.message,
+                    'data': data,
+                }
+                File.appendJSON(config.error, json);
+            }
         }
 
 
