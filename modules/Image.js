@@ -6,9 +6,24 @@ var $String = require('../lib/String');
 var config = null;
 
 function copy(src, dest) {
-    console.log('从:', src.green);
-    console.log('到:', dest.yellow);
-    File.copy(src, dest);
+   
+    if (File.exists(dest)) {
+        if (config.overwrite) {
+            console.log('从:', src.green);
+            console.log('到 (覆盖):', dest.magenta);
+            File.copy(src, dest);
+        }
+        else {
+            console.log('已存在 (跳过):', dest.cyan);
+        }
+        
+    }
+    else {
+        console.log('从:', src.green);
+        console.log('到:', dest.yellow);
+        File.copy(src, dest);
+    }
+
 }
 
 
@@ -43,12 +58,9 @@ module.exports = {
 
     'processPhoto':function (file, data) {
 
-        var image = data.image;
-        var exif = data.exif;
-
-        var make = image.Make;
-        var model = image.Model;
-        var dt = exif.DateTimeOriginal;
+        var make = data.make;
+        var model = data.model;
+        var dt = data.datetime;
 
         if (!make || !model || !dt) {
             module.exports.processDefault(file);

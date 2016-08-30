@@ -3,7 +3,8 @@
     "src": "./test/",
 
     "dest": {
-        "exif": "./data/exif.json",
+        "overwrite": false,
+
         "error": "./data/error.json",
 
         "photo": "./data/photo/{make}/{model}/{year}/{year}-{month}-{day}/{name}",

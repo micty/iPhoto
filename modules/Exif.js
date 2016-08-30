@@ -29,14 +29,21 @@ function get(file, fn) {
         if (error) {
             console.log('Error:'.red, error.message.yellow);
             console.log('File:'.red, file.green);
-
             fn && fn();
             return;
         }
 
-        console.log('成功提取:', file.green);
+        console.log('成功提取 EXIF:', file.green);
 
-        fn && fn(data);
+        //为了节省内存，这里只返回需要用到的几个字段。
+        var image = data.image;
+        var exif = data.exif;
+      
+        fn && fn({
+            'make': image.Make,
+            'model': image.Model,
+            'datetime': exif.DateTimeOriginal,
+        });
     });
 }
 
@@ -75,7 +82,9 @@ module.exports = {
 
             get(file, function (data) {
 
-                file$data[file] = data;
+                if (data) {
+                    file$data[file] = data;
+                }
 
                 //最后一项
                 if (index >= maxIndex) {
