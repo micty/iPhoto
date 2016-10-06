@@ -20,8 +20,10 @@ config.excludes.forEach(function (item) {
 var files = [];
 
 config.src.forEach(function (src) {
-    console.log('扫描目录:', src.yellow);
-    var list = Directory.getFiles(src);
+    
+    var list = Directory.getFiles(src, function (dir) {
+        console.log('扫描目录:', dir.yellow);
+    });
     files = files.concat(list);
 });
 
