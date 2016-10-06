@@ -10,11 +10,11 @@ function copy(src, dest) {
     if (File.exists(dest)) {
         if (config.overwrite) {
             console.log('从:', src.green);
-            console.log('到 (覆盖):', dest.magenta);
+            console.log('到(覆盖):', dest.magenta);
             File.copy(src, dest);
         }
         else {
-            console.log('已存在 (跳过):', dest.cyan);
+            console.log('已存在(跳过):', dest.gray);
         }
         
     }

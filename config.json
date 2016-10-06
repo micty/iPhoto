@@ -1,22 +1,28 @@
 {
 
-    "src": "./test/",
+    "src": [
+      "../iPhoto-src/"
+    ],
 
     "dest": {
         "overwrite": false,
 
-        "error": "./data/error.json",
+        "error": "../iPhoto-dest/error.json",
 
-        "photo": "./data/photo/{make}/{model}/{year}/{year}-{month}-{day}/{name}",
+        "photo": "../iPhoto-dest/photo/{make}/{model}/{year}/{year}-{month}-{day}/{name}",
 
-        ".jpg": "./data/jpg/{date}/{name}",
-        ".png": "./data/png/{date}/{name}",
-        ".mov": "./data/mov/{date}/{name}",
-        ".mp4": "./data/mp4/{date}/{name}",
+        ".jpg": "../iPhoto-dest/jpg/{date}/{name}",
+        ".png": "../iPhoto-dest/png/{date}/{name}",
+        ".mov": "../iPhoto-dest/mov/{date}/{name}",
+        ".mp4": "../iPhoto-dest/mp4/{date}/{name}",
 
-        ".*": "./data/other/{date}/{name}"
+        ".*": "../iPhoto-dest/other/{date}/{name}"
         
     },
+
+    "excludes": [
+        ".ini"
+    ],
 
     "exif": {
         "exts": [".JPG"]

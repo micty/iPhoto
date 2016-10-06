@@ -1,39 +1,77 @@
 ﻿
-
+var path = require('path');
 var Directory = require('./lib/Directory');
 var File = require('./lib/File');
 
 var Exif = require('./modules/Exif');
 var Image = require('./modules/Image');
 
-
 var config = File.readJSON('./config.json');
-
-console.log('扫描目录:', config.src.yellow);
-
-var files = Directory.getFiles(config.src);
-
-console.log('共找到', files.length.toString().cyan, '个文件');
-
-
 
 Exif.config(config.exif);
 Image.config(config.dest);
 
-Exif.get(files, function (json) {
+var excludes = {};
+config.excludes.forEach(function (item) {
+    excludes[item] = true;
+});
 
-    files.forEach(function (file) {
-        var data = json[file];
+
+var files = [];
+
+config.src.forEach(function (src) {
+    console.log('扫描目录:', src.yellow);
+    var list = Directory.getFiles(src);
+    files = files.concat(list);
+});
+
+var total = files.length;
+console.log('共找到', total.toString().cyan, '个文件');
+
+
+
+var index = 0;
+var maxIndex = total - 1;
+
+function process() {
+    
+    var order = index + 1;
+    var percent = ((order / total) * 100).toFixed(2);
+    var item = order + '/' + total + ' = ' + percent + '%';
+    console.log(item.bgBlue);
+
+    var file = files[index];
+    var ext = path.extname(file).toLowerCase();
+
+    if (excludes[ext]) {
+        next();
+        return;
+    }
+
+    Exif.get(file, function (data) {
+        
 
         if (data) {
+            console.log('提取 EXIF:', file.green);
             Image.processPhoto(file, data);
         }
         else {
             Image.processDefault(file);
         }
+
+        next();
     });
 
-});
+}
+
+function next() {
+    if (index < maxIndex) {
+        index++;
+        process();
+    }
+}
+
+process();
 
 
 
