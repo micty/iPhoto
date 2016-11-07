@@ -1,5 +1,6 @@
 
-/data
-/node_modules
-/test
+
+/bin/node_modules
+/build
+/src/node_modules
 

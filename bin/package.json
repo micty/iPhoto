@@ -1,0 +1,15 @@
+
+{
+    "name": "iweber",
+    "version": "",
+    "dependencies": {},
+    
+    "devDependencies": {
+        "grunt": "",
+        "grunt-contrib-copy": ""
+    }, 
+
+    "engines": {
+        "node": ">=0.8.0"
+    }
+}

@@ -1,12 +1,11 @@
 ﻿
+var Colors = require('colors');
 
 
+define('/Log', function (require, module, exports) {
 
-module.exports = (function (exports) {
 
-
-    var File = require('../lib/File');
-    var Colors = require('colors');
+    var File = require('File');
 
 
     var colors = [
@@ -31,7 +30,7 @@ module.exports = (function (exports) {
         console.log(text);
 
         text = text.replace(/\u001b\[\d\dm/g, '') + '\n';
- 
+
 
         try { //防止 log.txt 被锁死，避免整个程序挂掉
             File.append('./log.txt', text);
@@ -46,7 +45,7 @@ module.exports = (function (exports) {
             console.log(msg);
             fails.push(text);
         }
-        
+
 
     }
 
@@ -79,6 +78,5 @@ module.exports = (function (exports) {
 
 
 
-})(exports);
 
-
+});

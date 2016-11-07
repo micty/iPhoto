@@ -1,0 +1,27 @@
+{
+    "name": "iphoto",
+    "version": "0.1.0",
+    "description": "exports photos from devices and classify them to different types",
+    "main": "index.js",
+    "keywords": [
+        "classify",
+        "photo"
+    ],
+    "author": {
+        "name": "mictydeng",
+        "email": "mictydeng@qq.com"
+    },
+    "license": "ISC",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/micty/iPhoto.git"
+    },
+    "dependencies": {
+        "colors": "",
+        "defineJS": "",
+        "exif": "",
+        "iconv-lite": ""
+    },
+
+    "devDependencies": { }
+}
