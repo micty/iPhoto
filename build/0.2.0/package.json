@@ -1,0 +1,26 @@
+{
+    "name": "iPhoto",
+    "version": "0.2.0",
+    "description": "把照片按拍摄日期、相机、来源和类型等条件进行自动归类，同时可以归类视频文件等。",
+    "main": "index.js",
+    "keywords": [
+        "classify",
+        "photo"
+    ],
+    "author": {
+        "name": "mictydeng",
+        "email": "mictydeng@qq.com"
+    },
+    "license": "ISC",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/micty/iPhoto.git"
+    },
+    "dependencies": {
+        "colors": "",
+        "defineJS": "0.3.2",
+        "exif": "",
+        "iconv-lite": ""
+    },
+    "devDependencies": {}
+}
