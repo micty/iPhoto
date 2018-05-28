@@ -1,7 +1,7 @@
 {
-    "name": "iphoto",
-    "version": "0.1.0",
-    "description": "exports photos from devices and classify them to different types",
+    "name": "iPhoto",
+    "version": "0.2.0",
+    "description": "把照片按拍摄日期、相机、来源和类型等条件进行自动归类，同时可以归类视频文件等。",
     "main": "index.js",
     "keywords": [
         "classify",
@@ -18,10 +18,9 @@
     },
     "dependencies": {
         "colors": "",
-        "defineJS": "",
+        "defineJS": "0.3.2",
         "exif": "",
         "iconv-lite": ""
     },
-
-    "devDependencies": { }
+    "devDependencies": {}
 }

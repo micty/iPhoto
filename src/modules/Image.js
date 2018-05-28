@@ -1,11 +1,13 @@
 ﻿
 var path = require('path');
+var fs = require('fs');
+var $ = require('defineJS');
 
 
 define('/Image', function (require, module, exports) {
-
     var File = require('File');
-    var $String = require('String');
+    var $String = $.require('String');
+    var $Date = $.require('Date');
 
     var config = null;
 
@@ -36,58 +38,109 @@ define('/Image', function (require, module, exports) {
 
     module.exports = {
 
-        'config': function (data) {
+        /**
+        * 配置。
+        */
+        config: function (data) {
             config = data;
         },
 
-        'processDefault': function (file) {
-
+        /**
+        * 处理普通图片和其它文档。
+        * 该方法处理不带有 exif 信息的文件。
+        */
+        processDefault: function (file) {
             var name = file.split('/').slice(-1)[0];        //短文件名。
             var ext = path.extname(file).toLowerCase();     //扩展名。
-            var date = file.split('/').slice(-2)[0];        //最后一级目录，当作是日期
+            var stat = fs.statSync(file);
+            var date = $Date.format(stat.mtime, 'yyyy-MM-dd'); //图片文件的生成日期。
+            var sample = config[ext] || config['.*'] || '';
+            var base = config.base || '';
+            var process = config.process;
+            var dest = '';
 
-            var sample = config[ext] || config['.*'];
-            if (!sample) {
-                return;
+
+            //让外部有个机会处理路径生成规则。
+            if (typeof process == 'funtion') {
+                dest = process({
+                    'date': date,
+                    'name': name,
+                    'file': file,
+                    'ext': ext,
+                    'sample': sample,
+                    'stat': stat,
+                    'base': base,
+                });
             }
 
+            if (!dest) {
+                if (!sample) {
+                    return;
+                }
 
-            var dest = $String.format(sample, {
-                'date': date,
-                'name': name,
-            });
+                dest = $String.format(sample, {
+                    'date': date,
+                    'name': name,
+                });
+
+                dest = base + dest;  //加上基准路径。
+            }
 
             copy(file, dest);
         },
 
-
-        'processPhoto': function (file, data) {
-
-            var make = data.make;
-            var model = data.model;
-            var dt = data.datetime;
+        /**
+        * 处理照片。
+        * 该方法处理带有 exif 信息的照片。
+        */
+        processPhoto: function (file, exif) {
+            var make = exif.make;
+            var model = exif.model;
+            var dt = exif.datetime;
 
             if (!make || !model || !dt) {
                 module.exports.processDefault(file);
                 return;
             }
 
-
             try {
-
-                dt = dt.split(' ')[0];
-                dt = dt.split(':');
-
                 var name = file.split('/').slice(-1)[0];    //短文件名。
+                var process = config.process;
+                var base = config.base || '';
+                var sample = config.photo || '';
+                var dest = '';
 
-                var dest = $String.format(config.photo, {
-                    'make': make,
-                    'model': model,
-                    'year': dt[0],
-                    'month': dt[1],
-                    'day': dt[2],
-                    'name': name,
-                });
+                //让外部有个机会处理路径生成规则。
+                if (typeof process == 'funtion') {
+                    var ext = path.extname(file);     //扩展名。
+                    var stat = fs.statSync(file);
+
+                    dest = process({
+                        'name': name,
+                        'file': file,
+                        'sample': sample,
+                        'base': base,
+                        'ext': ext,
+                        'stat': stat,
+                        'exif': exif,
+                    });
+                }
+
+                if (!dest) {
+                    dt = dt.split(' ')[0];
+                    dt = dt.split(':');
+
+                    dest = $String.format(sample, {
+                        'make': make,
+                        'model': model,
+                        'year': dt[0],
+                        'month': dt[1],
+                        'day': dt[2],
+                        'name': name,
+                    });
+
+                    dest = base + dest;  //加上基准路径。
+                }
 
                 copy(file, dest);
             }
@@ -95,14 +148,19 @@ define('/Image', function (require, module, exports) {
                 console.log('错误:'.bgRed, file.red, ex.message.yellow);
 
                 var errorFile = config.error;
+
                 if (errorFile) {
                     var json = {};
 
                     json[file] = {
                         'error': ex.message,
-                        'data': data,
+                        'exif': exif,
                     }
-                    File.appendJSON(config.error, json);
+
+                    //加上基准路径。
+                    errorFile = (config.base || '') + errorFile;
+
+                    File.appendJSON(errorFile, json);
                 }
             }
         },

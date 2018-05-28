@@ -1,12 +1,13 @@
 
 {
-    "name": "iweber",
-    "version": "",
+    "name": "iPhoto",
+    "version": "把照片按拍摄日期、相机、来源和类型等条件进行自动归类，同时可以归类视频文件等。",
     "dependencies": {},
     
     "devDependencies": {
         "grunt": "",
-        "grunt-contrib-copy": ""
+        "grunt-contrib-copy": "",
+        "grunt-contrib-clean": ""
     }, 
 
     "engines": {

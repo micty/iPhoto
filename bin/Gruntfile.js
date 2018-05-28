@@ -8,6 +8,15 @@ module.exports = function (grunt) {
     var dest = '../build/' + pkg.version;
 
     grunt.initConfig({
+        clean: {
+            options: {
+                force: true,
+            },
+            node_modules: [
+                '../src/node_modules/',
+                '../build/**/node_modules/',
+            ],
+        },
         copy: {
             dist: {
                 files: [
@@ -31,6 +40,8 @@ module.exports = function (grunt) {
         },
     });
 
+    grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.registerTask('default', ['copy']);
+
+    grunt.registerTask('default', ['clean', 'copy']);
 };
